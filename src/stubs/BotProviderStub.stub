@@ -1,0 +1,22 @@
+<?php
+
+namespace App\Providers\Telegram;
+
+use Illuminate\Support\ServiceProvider;
+use Romanlazko\LaravelTelegram\Bot;
+
+class {{ class_name }} extends ServiceProvider
+{
+    public function register(): void
+    {
+        $this->app->singleton('{{ bot_name }}', function () {
+            return Bot::make()
+                ->id('{{ bot_id }}')
+                ->token('{{ bot_token }}')
+                ->discoverCommands(app_path('Telegram/{{ bot_name }}/Commands'), "App\\Telegram\\{{ bot_name }}\\Commands")
+                ->inlineDataStructure([
+                    'temp' => null,
+                ]);
+        });
+    }
+}

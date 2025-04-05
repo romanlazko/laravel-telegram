@@ -1,0 +1,48 @@
+<?php
+
+namespace {{ namespace }};
+
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Romanlazko\LaravelTelegram\Command;
+use Romanlazko\LaravelTelegram\Models\Types\Chat;
+use Romanlazko\LaravelTelegram\Models\Types\Keyboard\InlineKeyboardButton;
+use Romanlazko\LaravelTelegram\Models\Types\Keyboard\InlineKeyboardMarkup;
+use Romanlazko\LaravelTelegram\Models\Types\Message;
+use Romanlazko\LaravelTelegram\Models\Types\Update;
+
+
+class {{ class_name }} extends Command
+{
+    public function execute()
+    {
+        $this->before(fn (Chat $chat) => 
+            $chat->conversation->clear()
+        );
+
+        $this->apiMethod(fn (Update $update) => 
+            $update->type === 'callback_query' ? 'editMessageText' : 'sendMessage'
+        );
+
+        $this->text(implode("\n", [
+            "text"
+        ]));
+
+        $this->chatId(fn (Chat $chat) => 
+            $chat->id
+        );
+
+        $this->parseMode('Markdown');
+
+        return $this->send();
+    }
+
+    public function resolveDefaultClosureDependencyForEvaluationByName(string $parameterName): array
+    {
+        return match ($parameterName) {
+            'update' => [$this->getObject()],
+            'message' => [$this->evaluate(fn ($update) => $update->message ?? $update->callback_query->message)],
+            'chat' => [$this->evaluate(fn ($message) => $message->chat)],
+            default => parent::resolveDefaultClosureDependencyForEvaluationByName($parameterName),
+        };
+    }
+}
