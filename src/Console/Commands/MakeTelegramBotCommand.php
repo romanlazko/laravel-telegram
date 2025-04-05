@@ -90,7 +90,7 @@ class MakeTelegramBotCommand extends Command
 
     protected function createProvider(TelegramBot $bot): void
     {
-        $stubPath = __DIR__.'/../stubs/BotProviderStub.stub';
+        $stubPath = __DIR__.'/../../stubs/BotProviderStub.stub';
         $providerPath = base_path("app/Providers/Telegram/{$bot->name}Provider.php");
 
         (new StubGenerator)->generateFileFromStub($stubPath, $providerPath, [
