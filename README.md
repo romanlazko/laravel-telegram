@@ -34,7 +34,7 @@ php artisan vendor:publish --tag=laravel-telegram-migrations
 Use the following command to register a bot with your Laravel application:
 
 ```bash
-php artisan telegram:bot token=YOUR_BOT_TOKEN name=BotName
+php artisan telegram:bot YOUR_BOT_TOKEN
 ```
 
 This will generate a new service provider at:
@@ -59,7 +59,7 @@ Add it manually if it was not auto-registered.
 To set the Telegram webhook for your bot:
 
 ```bash
-php artisan telegram:set-webhook id=telegram_bot_id
+php artisan telegram:set-webhook telegram_bot_id
 ```
 
 The webhook URL defaults to:
