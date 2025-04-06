@@ -1,13 +1,33 @@
 ## Telegram Package for Laravel
 
-#### Installation
-- Run the command: `composer require romanlazko/laravel-telegram`
+## Installation
+You can install the package via composer:
 
-## Optional
-- Publish the migrations: `php artisan vendor:publish --tag=laravel-telegram-migrations`
-- If Laravel is version 10 or lower, add the Romanlazko\LaravelTelegram\TelegramServiceProvider to the `config/app.php` service providers array.
+```bash
+composer require romanlazko/laravel-telegram
+```
 
-#### Usage
-- Create the bot: `php artisan make:telegram-bot`
+#### Optional
+You can publish the migration file with:
 
-- Create the commands: `php artisan make:telegram-command`
+```bash
+php artisan vendor:publish --tag=laravel-telegram-migrations
+```
+
+## Usage
+
+Create the bot:
+```bash
+php artisan make:telegram-bot --token={token} --name=MyBot
+```
+
+Latest Laravel versions have auto dicovery and automatically add service provider - if you're using 5.4.x and below, remember to add it to providers array at /app/config/app.php:
+
+```php
+App\Providers\Telegram\MyBotProvider::class,
+```
+
+Create the commands:
+```bash
+php artisan make:telegram-command
+```
