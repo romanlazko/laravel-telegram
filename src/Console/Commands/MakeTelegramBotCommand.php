@@ -10,13 +10,12 @@ use Romanlazko\LaravelTelegram\Services\StubGenerator;
 use Romanlazko\LaravelTelegram\TelegramApiClient;
 use Symfony\Component\Console\Attribute\AsCommand;
 
-use function Laravel\Prompts\multiselect;
 use function Laravel\Prompts\text;
 
-#[AsCommand(name: 'make:telegram-bot')]
+#[AsCommand(name: 'telegram:bot')]
 class MakeTelegramBotCommand extends Command
 {
-    protected $signature = 'make:telegram-bot {token?} {name?}';
+    protected $signature = 'telegram:bot {token?} {name?}';
 
     protected $description = 'Create a new Telegram bot';
 
@@ -24,9 +23,11 @@ class MakeTelegramBotCommand extends Command
     {
         $bot = $this->storeBot();
 
-        $this->createCommandDirectories($bot);
         $this->createProvider($bot);
-        $this->setWebhook($bot);
+
+        $this->createCommandDirectories($bot);
+
+        $this->info('✅ Telegram bot created successfully.');
     }
 
     protected function storeBot(): TelegramBot
@@ -42,6 +43,11 @@ class MakeTelegramBotCommand extends Command
                 'token' => $token,
                 'first_name' => $botInfo['first_name'],
                 'username' => $botInfo['username'],
+                'can_join_groups' => $botInfo['can_join_groups'],
+                'can_read_all_group_messages' => $botInfo['can_read_all_group_messages'],
+                'supports_inline_queries' => $botInfo['supports_inline_queries'],
+                'can_connect_to_business' => $botInfo['can_connect_to_business'],
+                'has_main_web_app' => $botInfo['has_main_web_app'],
             ]
         );
 
@@ -79,15 +85,6 @@ class MakeTelegramBotCommand extends Command
         return $response['result'];
     }
 
-    protected function createCommandDirectories(TelegramBot $bot): void
-    {
-        $path = base_path("app/Telegram/{$bot->name}/Commands/");
-
-        (new StubGenerator)->generateDirectory($path);
-
-        $this->info("📁 Directory [{$path}] created.");
-    }
-
     protected function createProvider(TelegramBot $bot): void
     {
         $stubPath = __DIR__.'/../../stubs/BotProviderStub.stub';
@@ -119,34 +116,12 @@ class MakeTelegramBotCommand extends Command
         }
     }
 
-    protected function setWebhook(TelegramBot $bot): void
+    protected function createCommandDirectories(TelegramBot $bot): void
     {
-        $url = env('APP_URL')."/api/telegram-webhook/{$bot->telegram_bot_id}";
-        $allowedUpdates = $this->getAllowedUpdates();
+        $path = base_path("app/Telegram/{$bot->name}/Commands/");
 
-        $response = (new TelegramApiClient)
-            ->token($bot->token)
-            ->apiMethod('setWebhook')
-            ->url($url)
-            ->allowedUpdates($allowedUpdates)
-            ->send();
+        (new StubGenerator)->generateDirectory($path);
 
-        $this->info($response['description']);
-    }
-
-    protected function getAllowedUpdates(): array
-    {
-        return multiselect(
-            label: 'Select allowed updates (leave empty for all)',
-            options: [
-                'message', 'edited_message', 'channel_post', 'edited_channel_post',
-                'business_connection', 'business_message', 'edited_business_message',
-                'deleted_business_messages', 'message_reaction', 'message_reaction_count',
-                'inline_query', 'chosen_inline_result', 'callback_query',
-                'shipping_query', 'pre_checkout_query', 'purchased_paid_media',
-                'poll', 'poll_answer', 'my_chat_member', 'chat_member',
-                'chat_join_request', 'chat_boost', 'removed_chat_boost',
-            ]
-        );
+        $this->info("📁 Directory [{$path}] created.");
     }
 }

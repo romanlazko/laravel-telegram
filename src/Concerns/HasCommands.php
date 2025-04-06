@@ -39,7 +39,7 @@ trait HasCommands
                 continue;
             }
 
-            if (! is_subclass_of($class, Command::class)) {
+            if (! is_a($class, Command::class, true)) {
                 continue;
             }
 
@@ -49,7 +49,7 @@ trait HasCommands
         return $this;
     }
 
-    private function registerCommand($class): void
+    private function registerCommand(string $class): void
     {
         $type = $class::getType();
         $command = $class::getCommand();
@@ -84,7 +84,7 @@ trait HasCommands
         return $commandClass;
     }
 
-    private function getCommandClass(?string $command, ?string $type): ?string
+    private function getCommandClass(string $command, string $type): ?string
     {
         if (blank($command) or blank($type)) {
             return null;

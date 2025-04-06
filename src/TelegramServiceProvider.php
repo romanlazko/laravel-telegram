@@ -5,6 +5,7 @@ namespace Romanlazko\LaravelTelegram;
 use Illuminate\Support\ServiceProvider;
 use Romanlazko\LaravelTelegram\Console\Commands\MakeCommandCommand;
 use Romanlazko\LaravelTelegram\Console\Commands\MakeTelegramBotCommand;
+use Romanlazko\LaravelTelegram\Console\Commands\SetWebhook;
 
 class TelegramServiceProvider extends ServiceProvider
 {
@@ -14,6 +15,7 @@ class TelegramServiceProvider extends ServiceProvider
             $this->commands([
                 MakeCommandCommand::class,
                 MakeTelegramBotCommand::class,
+                SetWebhook::class,
             ]);
         }
 

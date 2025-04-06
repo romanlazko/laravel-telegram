@@ -10,12 +10,12 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use function Laravel\Prompts\select;
 use function Laravel\Prompts\text;
 
-#[AsCommand(name: 'make:telegram-command')]
+#[AsCommand(name: 'telegram:command')]
 class MakeCommandCommand extends Command
 {
     protected $description = 'Create a new Telegram command class';
 
-    protected $signature = 'make:telegram-command {name?} {--B|bot=} {--A|auth_path=} {--F|force}';
+    protected $signature = 'telegram:command {name?} {--B|bot=} {--A|auth_path=} {--F|force}';
 
     public function handle(StubGenerator $stubGenerator): bool
     {
@@ -125,10 +125,10 @@ class MakeCommandCommand extends Command
         $options = array_merge($roles, $options);
 
         return str($this->option('auth_path') ?? select(
-            label: 'Select a auth',
-            options: $options,
-            required: true,
-        ))
+                label: 'Select a auth',
+                options: $options,
+                required: true,
+            ))
             ->ucfirst()
             ->append('Commands');
     }
