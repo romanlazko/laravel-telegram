@@ -84,7 +84,7 @@ trait HasCommands
         return $commandClass;
     }
 
-    private function getCommandClass(string $command, string $type): ?string
+    private function getCommandClass(?string $command, ?string $type): ?string
     {
         if (blank($command) or blank($type)) {
             return null;
