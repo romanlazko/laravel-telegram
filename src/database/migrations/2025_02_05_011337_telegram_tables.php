@@ -693,8 +693,8 @@ return new class extends Migration
 
             $table->foreignIdFor(\Romanlazko\LaravelTelegram\Models\TelegramBot::class, 'telegram_bot_id')->nullable()->constrained('telegram_bots');
 
-            $table->bigInteger('id')->unique();
-            $table->string('type');
+            $table->bigInteger('id')->nullable();
+            $table->string('type')->nullable();
             $table->string('title')->nullable();
             $table->string('username')->nullable();
             $table->string('first_name')->nullable();

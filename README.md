@@ -93,13 +93,13 @@ Commands are the main way to handle user interactions with the bot. Each command
 Generate a new command with:
 
 ```bash
-php artisan telegram:command StartCommand
+php artisan telegram:command DefaultCommand
 ```
 
 This creates a file at:
 
 ```
-app/Telegram/BotName/Commands/StartCommand.php
+app/Telegram/BotName/Commands/DefaultCommand.php
 ```
 
 ---
@@ -112,7 +112,7 @@ namespace App\Telegram\MyBot\Commands;
 use Romanlazko\LaravelTelegram\Command;
 use Romanlazko\LaravelTelegram\Models\Types\Chat;
 
-class StartCommand extends Command
+class DefaultCommand extends Command
 {
     public function execute(Chat $chat)
     {
